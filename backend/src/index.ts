@@ -1,7 +1,6 @@
 import express, { Request, Response } from "express";
 import { superheroService } from "./services/superhero.service";
 import { SUPERHEROES_ENDPOINT } from "../constants/constants";
-import "dotenv/config";
 
 const app = express();
 const port = 3000;
