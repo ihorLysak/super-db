@@ -7,8 +7,8 @@ class SuperheroService implements AbstractService<FullSuperheroDto> {
     return await superheroModel.create(heroData);
   }
 
-  public async getPage(offset: number) {
-    return await superheroModel.getPage(offset);
+  public async getAll() {
+    return await superheroModel.getAll();
   }
 
   public async getById(id: number) {

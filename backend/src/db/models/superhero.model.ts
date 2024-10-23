@@ -18,11 +18,8 @@ class SuperheroModel extends AbstractModel {
     return createdHero;
   }
 
-  public getPage(offset: number): Promise<FullSuperheroDto[]> {
-    return this.db(TableName.SUPERHEROES)
-      .select("*")
-      .offset(offset)
-      .limit(HEROES_TO_DISPLAY_AMOUNT);
+  public getAll(): Promise<FullSuperheroDto[]> {
+    return this.db(TableName.SUPERHEROES).select("*");
   }
 
   public async getById(heroId: number): Promise<FullSuperheroDto> {

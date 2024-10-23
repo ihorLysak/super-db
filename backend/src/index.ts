@@ -22,7 +22,7 @@ app.post(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
 app.get(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
   const offset = req.query.offset ? Number(req.query.offset) : 0;
   try {
-    const allHeroes = await superheroService.getPage(Number(offset));
+    const allHeroes = await superheroService.getAll();
     res.send(allHeroes);
   } catch (err) {
     console.log(err);
