@@ -2,6 +2,7 @@ import { Knex } from "knex";
 import { AbstractModel } from "./abstract.model";
 import { FullSuperheroDto } from "../../../types/types";
 import { TableName } from "../../../enums/enums";
+import { HEROES_TO_DISPLAY_AMOUNT } from "../../../constants/constants";
 import { db } from "../database";
 
 class SuperheroModel extends AbstractModel {
@@ -17,8 +18,11 @@ class SuperheroModel extends AbstractModel {
     return createdHero;
   }
 
-  public getAll(): Promise<FullSuperheroDto[]> {
-    return this.db(TableName.SUPERHEROES).select("*");
+  public getPage(offset: number): Promise<FullSuperheroDto[]> {
+    return this.db(TableName.SUPERHEROES)
+      .select("*")
+      .offset(offset)
+      .limit(HEROES_TO_DISPLAY_AMOUNT);
   }
 
   public async getById(heroId: number): Promise<FullSuperheroDto> {
