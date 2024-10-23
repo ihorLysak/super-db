@@ -19,7 +19,7 @@ app.post(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
   }
 });
 
-app.get(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
+app.get(SUPERHEROES_ENDPOINT, async (res: Response) => {
   try {
     const allHeroes = await superheroService.getAll();
     res.send(allHeroes);
