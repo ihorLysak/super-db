@@ -1,0 +1,11 @@
+.container {
+  padding: 1rem;
+  display: flex;
+  color: white;
+  background: linear-gradient(90deg, black 0%, gray 35%, lightgray 100%);
+}
+
+.title {
+  font-size: 2.5rem;
+  font-weight: 700;
+}

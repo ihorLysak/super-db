@@ -128,4 +128,14 @@ body,
 #root,
 .page {
   height: 100%;
+  font-family: sans-serif;
+}
+
+h2 {
+  font-size: 2rem;
+  font-weight: 700;
+}
+
+* {
+  font-family: sans-serif;
 }

@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AsyncThunkConfig } from "../../types/async-thunk-config";
-import { MinimalSuperheroDto } from "../../../types/types";
+import { MinimalSuperheroDto } from "../../../libs/types/types";
 
 const getAllHeroes = createAsyncThunk<
   MinimalSuperheroDto[],

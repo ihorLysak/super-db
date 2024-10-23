@@ -1,5 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { MinimalSuperheroDto } from "../../../types/types";
+import { MinimalSuperheroDto } from "../../../libs/types/types";
 import { getAllHeroes } from "./actions";
 
 interface State {

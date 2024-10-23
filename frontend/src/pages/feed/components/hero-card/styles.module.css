@@ -1,0 +1,49 @@
+.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 2px solid black;
+  padding: 2rem;
+  border-radius: 2rem;
+}
+
+.hero-details {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.main-image {
+  width: 150px;
+  height: 150px;
+  border-radius: 1rem;
+}
+
+.nickname {
+  font-size: 2rem;
+  font-size: 700;
+}
+
+.btns-container {
+  display: flex;
+  gap: 2rem;
+}
+
+.button {
+  font-size: 2rem;
+  background: none;
+  border: 2px solid black;
+  border-radius: 0.7rem;
+  cursor: pointer;
+  transition: all ease-in 100ms;
+}
+
+.button:hover {
+  background-color: black;
+  color: white;
+  transition: all ease-in 100ms;
+}
+
+.icon {
+  padding: 1rem;
+}
