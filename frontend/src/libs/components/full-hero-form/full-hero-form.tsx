@@ -1,40 +1,48 @@
-import React, { useRef } from "react";
-import { FullSuperheroDto } from "../../types/types";
-import { ValueOf } from "../../types/types";
-import { FormType } from "../../enums/enums";
-interface Properties {
-  type: ValueOf<typeof FormType>;
-  fullHeroDetails?: FullSuperheroDto;
-}
+import React, { useRef, useEffect } from "react";
+import { FullSuperheroDto, CreateSuperheroDto } from "../../types/types";
 
-const getHeader = (type: ValueOf<typeof FormType>) => {
-  switch (type) {
-    case FormType.CREATE: {
-      return <h2>Create Hero</h2>;
-    }
-    case FormType.DETAILS: {
-      return <h2>Hero Details</h2>;
-    }
-    case FormType.EDIT: {
-      return <h2>Edit Hero</h2>;
-    }
-  }
-};
+import styles from "./styles.module.css";
+
+interface Properties {
+  type?: "Create" | "Edit" | "View";
+  fullHeroDetails?: FullSuperheroDto;
+  onSubmit?: (payload: CreateSuperheroDto, id?: number) => void;
+}
 
 const FullHeroForm: React.FC<Properties> = ({
   type,
   fullHeroDetails,
+  onSubmit,
 }: Properties) => {
   const nicknameInputRef = useRef<HTMLInputElement>(null);
   const realNameInputRef = useRef<HTMLInputElement>(null);
-  const originInputRef = useRef<HTMLInputElement>(null);
+  const originInputRef = useRef<HTMLTextAreaElement>(null);
   const superpowersInputRef = useRef<HTMLInputElement>(null);
   const catchPhraseInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (fullHeroDetails) {
+      if (nicknameInputRef.current)
+        nicknameInputRef.current.value = fullHeroDetails.nickname || "";
+
+      if (realNameInputRef.current)
+        realNameInputRef.current.value = fullHeroDetails.real_name || "";
+
+      if (originInputRef.current)
+        originInputRef.current.value = fullHeroDetails.origin_description || "";
+
+      if (superpowersInputRef.current)
+        superpowersInputRef.current.value = fullHeroDetails.superpowers || "";
+
+      if (catchPhraseInputRef.current)
+        catchPhraseInputRef.current.value = fullHeroDetails.catch_phrase || "";
+    }
+  }, [fullHeroDetails]);
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const heroPayload = {
+    const payload = {
       nickname: nicknameInputRef.current?.value as string,
       real_name: realNameInputRef.current?.value as string,
       origin_description: originInputRef.current?.value as string,
@@ -43,61 +51,76 @@ const FullHeroForm: React.FC<Properties> = ({
     };
 
     //api call
+    if (onSubmit) {
+      onSubmit(payload, fullHeroDetails?.id as number);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      {getHeader(type)}
-      <div>
-        <label htmlFor="nickname">nickname:</label>
-        <input
-          type="text"
-          name="nickname"
-          id="nickname"
-          value={fullHeroDetails?.nickname || ""}
-          ref={nicknameInputRef}
-        />
+    <form className={styles["form-container"]} onSubmit={handleSubmit}>
+      <div className={styles["names-wrapper"]}>
+        <div className={styles["input-container"]}>
+          <label htmlFor="nickname">nickname:</label>
+          <input
+            className={styles["input"]}
+            type="text"
+            name="nickname"
+            id="nickname"
+            ref={nicknameInputRef}
+            required
+            disabled={type === "View" && true}
+          />
+        </div>
+        <div className={styles["input-container"]}>
+          <label htmlFor="real_name">real name:</label>
+          <input
+            className={styles["input"]}
+            type="text"
+            name="real_name"
+            id="real_name"
+            ref={realNameInputRef}
+            required
+            disabled={type === "View" && true}
+          />
+        </div>
       </div>
-      <div>
-        <label htmlFor="real_name">real name:</label>
-        <input
-          type="text"
-          name="real_name"
-          id="real_name"
-          value={fullHeroDetails?.real_name || ""}
-          ref={realNameInputRef}
-        />
-      </div>
-      <div>
+
+      <div className={styles["input-container"]}>
         <label htmlFor="origin_description">origin:</label>
-        <input
-          type="textarea"
+        <textarea
+          className={styles["textarea"]}
           name="origin_description"
           id="origin_description"
-          value={fullHeroDetails?.origin_description || ""}
           ref={originInputRef}
+          required
+          disabled={type === "View" && true}
         />
       </div>
-      <div>
+      <div className={styles["input-container"]}>
         <label htmlFor="superpowers">superpowers:</label>
         <input
+          className={styles["input"]}
           type="text"
           name="superpowers"
           id="superpowers"
-          value={fullHeroDetails?.superpowers || ""}
           ref={superpowersInputRef}
+          required
+          disabled={type === "View" && true}
         />
       </div>
-      <div>
+      <div className={styles["input-container"]}>
         <label htmlFor="catch_phrase">catch phrase:</label>
         <input
+          className={styles["input"]}
           type="text"
           name="catch_phrase"
           id="catch_phrase"
-          value={fullHeroDetails?.catch_phrase || ""}
           ref={catchPhraseInputRef}
+          required
+          disabled={type === "View" && true}
         />
       </div>
+      {type !== "View" && <button className={styles["button"]}>{type}</button>}
     </form>
   );
 };

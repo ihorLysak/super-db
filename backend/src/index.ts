@@ -1,14 +1,17 @@
 import express, { Request, Response } from "express";
 import { superheroService } from "./services/superhero.service";
 import { SUPERHEROES_ENDPOINT } from "../constants/constants";
+import cors from "cors";
 
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(express.json());
 
 app.post(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
   const heroData = req.body;
+  console.log(heroData);
 
   try {
     const newHero = superheroService.create(heroData);
@@ -22,7 +25,7 @@ app.post(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
 app.get(SUPERHEROES_ENDPOINT, async (req: Request, res: Response) => {
   const offset = req.query.offset ? Number(req.query.offset) : 0;
   try {
-    const allHeroes = await superheroService.getAll();
+    const allHeroes = await superheroService.getAllMinimal();
     res.send(allHeroes);
   } catch (err) {
     console.log(err);

@@ -1,6 +1,6 @@
-type FullSuperheroDto = {
+type MinimalSuperheroDto = {
   id: number;
   nickname: string;
 };
 
-export { type FullSuperheroDto };
+export { type MinimalSuperheroDto };

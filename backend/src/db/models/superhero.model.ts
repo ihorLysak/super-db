@@ -1,8 +1,7 @@
 import { Knex } from "knex";
 import { AbstractModel } from "./abstract.model";
-import { FullSuperheroDto } from "../../../types/types";
+import { FullSuperheroDto, MinimalSuperheroDto } from "../../../types/types";
 import { TableName } from "../../../enums/enums";
-import { HEROES_TO_DISPLAY_AMOUNT } from "../../../constants/constants";
 import { db } from "../database";
 
 class SuperheroModel extends AbstractModel {
@@ -18,8 +17,10 @@ class SuperheroModel extends AbstractModel {
     return createdHero;
   }
 
-  public getAll(): Promise<FullSuperheroDto[]> {
-    return this.db(TableName.SUPERHEROES).select("*");
+  public getAllMinimal(): Promise<MinimalSuperheroDto[]> {
+    return this.db(TableName.SUPERHEROES)
+      .select("id", "nickname")
+      .returning("*");
   }
 
   public async getById(heroId: number): Promise<FullSuperheroDto> {
@@ -32,7 +33,6 @@ class SuperheroModel extends AbstractModel {
       .update(changes)
       .returning("*");
 
-    console.log(updatedHero);
     return updatedHero;
   }
 

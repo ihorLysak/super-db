@@ -125,8 +125,7 @@ table {
 
 :root,
 body,
-#root,
-.page {
+#root {
   height: 100%;
   font-family: sans-serif;
 }

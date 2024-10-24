@@ -1,14 +1,30 @@
 import React from "react";
-import { MinimalSuperheroDto } from "../../../../libs/types/types";
-import styles from "./styles.module.css";
+import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMagnifyingGlass, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { useAppDispatch } from "../../../../store/hooks/hooks";
+import { MinimalSuperheroDto } from "../../../../libs/types/types";
+import { actions as feedActions } from "../../../../store/slices/feed/feed";
+import { AppRoute } from "../../../../libs/enums/app-route.enum";
+
+import styles from "./styles.module.css";
 
 interface Properties {
   hero: MinimalSuperheroDto;
 }
 
 const HeroCard: React.FC<Properties> = ({ hero }: Properties) => {
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+
+  const handleDeleteHero = () => {
+    dispatch(feedActions.deleteHero(hero.id));
+  };
+
+  const handleOpenDetails = () => {
+    navigate(`${AppRoute.DETAILS}/${hero.id}`);
+  };
+
   return (
     <div className={styles["container"]}>
       <div className={styles["hero-details"]}>
@@ -20,13 +36,13 @@ const HeroCard: React.FC<Properties> = ({ hero }: Properties) => {
         <span className={styles["nickname"]}>{hero.nickname}</span>
       </div>
       <div className={styles["btns-container"]}>
-        <button className={styles["button"]}>
+        <button className={styles["button"]} onClick={handleOpenDetails}>
           <FontAwesomeIcon
             icon={faMagnifyingGlass}
             className={styles["icon"]}
           />
         </button>
-        <button className={styles["button"]}>
+        <button className={styles["button"]} onClick={handleDeleteHero}>
           <FontAwesomeIcon icon={faTrash} className={styles["icon"]} />
         </button>
       </div>
