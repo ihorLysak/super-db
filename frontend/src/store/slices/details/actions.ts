@@ -1,9 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AsyncThunkConfig } from "../../types/async-thunk-config";
-import {
-  FullSuperheroDto,
-  CreateSuperheroDto,
-} from "../../../libs/types/types";
+import { FullSuperheroDto } from "../../../libs/types/types";
 
 const getHeroDetails = createAsyncThunk<
   FullSuperheroDto,
@@ -15,7 +12,7 @@ const getHeroDetails = createAsyncThunk<
 });
 
 interface ChangeHeroPayload {
-  dataToChange: CreateSuperheroDto;
+  dataToChange: FormData;
   id: number;
 }
 
@@ -24,12 +21,10 @@ const changeHero = createAsyncThunk<
   ChangeHeroPayload,
   AsyncThunkConfig
 >("details/change-hero", async (payload) => {
+  console.log(payload);
   const response = fetch(`http://localhost:3000/superheroes/${payload.id}`, {
     method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload.dataToChange),
+    body: payload.dataToChange,
   });
   return (await response).json();
 });

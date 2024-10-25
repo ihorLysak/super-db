@@ -2,21 +2,17 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { AsyncThunkConfig } from "../../types/async-thunk-config";
 import {
   MinimalSuperheroDto,
-  CreateSuperheroDto,
   FullSuperheroDto,
 } from "../../../libs/types/types";
 
 const createHero = createAsyncThunk<
   FullSuperheroDto,
-  CreateSuperheroDto,
+  FormData,
   AsyncThunkConfig
 >("feed/create-hero", async (payload) => {
   const response = await fetch("http://localhost:3000/superheroes", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(payload),
+    body: payload,
   });
 
   return (await response.json()) as FullSuperheroDto;

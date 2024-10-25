@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useParams } from "react-router-dom";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPencil } from "@fortawesome/free-solid-svg-icons";
 
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
-import { FullHeroForm, HeroModal } from "../../libs/components/components";
-import { CreateSuperheroDto, FullSuperheroDto } from "../../libs/types/types";
+import {
+  FullHeroForm,
+  HeroModal,
+  RoundButton,
+} from "../../libs/components/components";
+import { FullSuperheroDto } from "../../libs/types/types";
 import { actions as detailsActions } from "../../store/slices/details/details";
 
 import styles from "./styles.module.css";
@@ -26,7 +29,7 @@ const Details: React.FC = () => {
   }, []);
 
   const handleChangeHero = useCallback(
-    (payload: CreateSuperheroDto) => {
+    (payload: FormData) => {
       dispatch(
         detailsActions.changeHero({
           dataToChange: payload,
@@ -53,9 +56,7 @@ const Details: React.FC = () => {
         <h2>Details</h2>
         <div className={styles["btn-wrapper"]}>
           <span>edit hero</span>
-          <button className={styles["button"]} onClick={handleModalToggle}>
-            <FontAwesomeIcon icon={faPencil} />
-          </button>
+          <RoundButton icon={faPencil} onClick={handleModalToggle} />
         </div>
       </div>
       <div className={styles["form-wrapper"]}>

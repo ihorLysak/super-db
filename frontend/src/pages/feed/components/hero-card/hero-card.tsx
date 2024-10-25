@@ -17,6 +17,10 @@ const HeroCard: React.FC<Properties> = ({ hero }: Properties) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const imagePath = hero.image_path
+    ? hero.image_path
+    : "https://via.assets.so/img.jpg?w=400&h=150&tc=blue&bg=#";
+
   const handleDeleteHero = () => {
     dispatch(feedActions.deleteHero(hero.id));
   };
@@ -29,7 +33,7 @@ const HeroCard: React.FC<Properties> = ({ hero }: Properties) => {
     <div className={styles["container"]}>
       <div className={styles["hero-details"]}>
         <img
-          src="https://via.assets.so/img.jpg?w=400&h=150&tc=blue&bg=#"
+          src={imagePath}
           alt={`${hero.nickname}'s message`}
           className={styles["main-image"]}
         />

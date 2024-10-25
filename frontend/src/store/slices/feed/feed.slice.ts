@@ -8,17 +8,23 @@ import { getAllHeroes, createHero, deleteHero } from "./actions";
 interface State {
   heroes: MinimalSuperheroDto[];
   isLoading: boolean;
+  pageIndex: number;
 }
 
 const initialState: State = {
   heroes: [],
   isLoading: false,
+  pageIndex: 1,
 };
 
 const { actions, reducer } = createSlice({
   initialState,
   name: "feed",
-  reducers: {},
+  reducers: {
+    setPageIndex(state, action: PayloadAction<number>) {
+      state.pageIndex = action.payload;
+    },
+  },
   extraReducers(builder) {
     builder.addCase(getAllHeroes.pending, (state) => {
       state.isLoading = true;

@@ -1,12 +1,12 @@
 import React, { useRef, useEffect } from "react";
-import { FullSuperheroDto, CreateSuperheroDto } from "../../types/types";
+import { FullSuperheroDto } from "../../types/types";
 
 import styles from "./styles.module.css";
 
 interface Properties {
   type?: "Create" | "Edit" | "View";
   fullHeroDetails?: FullSuperheroDto;
-  onSubmit?: (payload: CreateSuperheroDto, id?: number) => void;
+  onSubmit?: (payload: FormData, id?: number) => void;
 }
 
 const FullHeroForm: React.FC<Properties> = ({
@@ -19,6 +19,7 @@ const FullHeroForm: React.FC<Properties> = ({
   const originInputRef = useRef<HTMLTextAreaElement>(null);
   const superpowersInputRef = useRef<HTMLInputElement>(null);
   const catchPhraseInputRef = useRef<HTMLInputElement>(null);
+  const imageInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (fullHeroDetails) {
@@ -42,17 +43,21 @@ const FullHeroForm: React.FC<Properties> = ({
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const payload = {
-      nickname: nicknameInputRef.current?.value as string,
-      real_name: realNameInputRef.current?.value as string,
-      origin_description: originInputRef.current?.value as string,
-      superpowers: superpowersInputRef.current?.value as string,
-      catch_phrase: catchPhraseInputRef.current?.value as string,
-    };
+    const formData = new FormData();
+    formData.append("nickname", nicknameInputRef.current?.value || "");
+    formData.append("real_name", realNameInputRef.current?.value || "");
+    formData.append("origin_description", originInputRef.current?.value || "");
+    formData.append("superpowers", superpowersInputRef.current?.value || "");
+    formData.append("catch_phrase", catchPhraseInputRef.current?.value || "");
 
-    //api call
+    if (imageInputRef.current?.files) {
+      Array.from(imageInputRef.current.files).forEach((file) => {
+        formData.append("images", file);
+      });
+    }
+
     if (onSubmit) {
-      onSubmit(payload, fullHeroDetails?.id as number);
+      onSubmit(formData, fullHeroDetails?.id);
     }
   };
 
@@ -84,7 +89,6 @@ const FullHeroForm: React.FC<Properties> = ({
           />
         </div>
       </div>
-
       <div className={styles["input-container"]}>
         <label htmlFor="origin_description">origin:</label>
         <textarea
@@ -120,7 +124,23 @@ const FullHeroForm: React.FC<Properties> = ({
           disabled={type === "View" && true}
         />
       </div>
-      {type !== "View" && <button className={styles["button"]}>{type}</button>}
+      {type !== "View" && (
+        <>
+          <div className={styles["input-container"]}>
+            <label htmlFor="image">Upload Images:</label>
+            <input
+              className={styles["input"]}
+              type="file"
+              name="image"
+              id="image"
+              ref={imageInputRef}
+              accept="image/*"
+              multiple
+            />
+          </div>
+          <button className={styles["button"]}>{type}</button>
+        </>
+      )}{" "}
     </form>
   );
 };

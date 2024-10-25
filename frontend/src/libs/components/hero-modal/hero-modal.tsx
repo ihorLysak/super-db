@@ -1,7 +1,6 @@
 import React from "react";
-import { FullSuperheroDto, CreateSuperheroDto } from "../../types/types";
-import { FullHeroForm } from "../components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { FullSuperheroDto } from "../../types/types";
+import { FullHeroForm, RoundButton } from "../components";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 import styles from "./styles.module.css";
@@ -10,7 +9,7 @@ interface Properties {
   type: "Create" | "Edit";
   heroDetails?: FullSuperheroDto;
   onClose: () => void;
-  onSubmit: (payload: CreateSuperheroDto, id?: number) => void;
+  onSubmit: (payload: FormData, id?: number) => void;
 }
 
 const HeroModal: React.FC<Properties> = ({
@@ -24,9 +23,7 @@ const HeroModal: React.FC<Properties> = ({
       <div className={styles["form-container"]}>
         <div className={styles["form-header"]}>
           <h2>{type} Hero</h2>
-          <button className={styles["button"]} onClick={onClose}>
-            <FontAwesomeIcon icon={faXmark} />
-          </button>
+          <RoundButton icon={faXmark} onClick={onClose} />
         </div>
         <FullHeroForm
           type={type}

@@ -1,30 +1,33 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { HeroModal } from "../../libs/components/components";
-import { HeroCard } from "./components/components";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { HeroCard, Pagination } from "./components/components";
+import { getEntriesForPage } from "./helpers/get-entries-for-page.helper";
+import { HeroModal, RoundButton } from "../../libs/components/components";
 import { useAppDispatch, useAppSelector } from "../../store/hooks/hooks";
 import { actions as feedActions } from "../../store/slices/feed/feed";
-import { CreateSuperheroDto } from "../../libs/types/create-hero-dto.type";
 
 import styles from "./styles.module.css";
 
 const Feed: React.FC = () => {
-  const heroes = useAppSelector((state) => state.feed.heroes);
+  const { heroes, pageIndex } = useAppSelector((state) => ({
+    heroes: state.feed.heroes,
+    pageIndex: state.feed.pageIndex,
+  }));
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const dispatch = useAppDispatch();
+  const heroesToDisplay = getEntriesForPage(pageIndex, heroes);
 
+  const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(feedActions.getAllHeroes());
-  });
+  }, [dispatch]);
 
   const handleModalToggle = useCallback(() => {
     setIsModalOpen((prevState) => !prevState);
   }, []);
 
   const handleCreateHero = useCallback(
-    (payload: CreateSuperheroDto) => {
+    (payload: FormData) => {
       dispatch(feedActions.createHero(payload));
       handleModalToggle();
     },
@@ -44,16 +47,18 @@ const Feed: React.FC = () => {
         <h2>Heroes list</h2>
         <div className={styles["btn-wrapper"]}>
           <span>new hero</span>
-          <button className={styles["button"]} onClick={handleModalToggle}>
-            <FontAwesomeIcon icon={faPlus} />
-          </button>
+          <RoundButton icon={faPlus} onClick={handleModalToggle} />
         </div>
       </div>
       <section className={styles["heroes-container"]}>
-        {heroes.map((hero) => {
-          return <HeroCard hero={hero} />;
+        {heroesToDisplay.map((hero) => {
+          return <HeroCard hero={hero} key={hero.id} />;
         })}
       </section>
+      <Pagination
+        pageIndex={pageIndex}
+        displayedEntriesAmount={heroesToDisplay.length}
+      />
     </div>
   );
 };

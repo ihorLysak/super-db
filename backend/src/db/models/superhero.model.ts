@@ -1,7 +1,11 @@
 import { Knex } from "knex";
 import { AbstractModel } from "./abstract.model";
-import { FullSuperheroDto, MinimalSuperheroDto } from "../../../types/types";
-import { TableName } from "../../../enums/enums";
+import {
+  FullSuperheroDto,
+  MinimalSuperheroDto,
+  CreateSuperheroDto,
+} from "../../../types/types";
+import { TableName } from "../../../libs/enums/enums";
 import { db } from "../database";
 
 class SuperheroModel extends AbstractModel {
@@ -9,7 +13,7 @@ class SuperheroModel extends AbstractModel {
     super(db);
   }
 
-  public async create(heroData: FullSuperheroDto): Promise<FullSuperheroDto> {
+  public async create(heroData: CreateSuperheroDto): Promise<FullSuperheroDto> {
     const [createdHero] = await this.db(TableName.SUPERHEROES)
       .insert(heroData)
       .returning("*");
@@ -17,8 +21,8 @@ class SuperheroModel extends AbstractModel {
     return createdHero;
   }
 
-  public getAllMinimal(): Promise<MinimalSuperheroDto[]> {
-    return this.db(TableName.SUPERHEROES)
+  public async getAllMinimal() {
+    return await this.db(TableName.SUPERHEROES)
       .select("id", "nickname")
       .returning("*");
   }

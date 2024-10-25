@@ -18,22 +18,6 @@
   font-size: 1.5rem;
 }
 
-.button {
-  font-size: 1.5rem;
-  height: 50px;
-  width: 50px;
-  border-radius: 50%;
-  background: none;
-  cursor: pointer;
-  transition: all ease-in 100ms;
-}
-
-.button:hover {
-  background-color: black;
-  color: white;
-  transition: all ease-in 100ms;
-}
-
 .heroes-container {
   display: flex;
   flex-direction: column;

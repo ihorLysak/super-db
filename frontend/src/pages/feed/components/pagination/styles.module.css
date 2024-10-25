@@ -1,0 +1,15 @@
+.pagination-container {
+  display: flex;
+  align-self: center;
+  gap: 1rem;
+}
+
+.page-index {
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 45px;
+  border: 2px solid black;
+  border-radius: 1rem;
+}
